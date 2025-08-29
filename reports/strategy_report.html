@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>ORB Strategy Report</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 3px solid #4CAF50;
+                padding-bottom: 10px;
+            }
+            h2 {
+                color: #555;
+                margin-top: 30px;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                background-color: white;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            th {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px;
+                text-align: left;
+            }
+            td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+            tr:hover {
+                background-color: #f5f5f5;
+            }
+            .metric-box {
+                display: inline-block;
+                background-color: white;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 15px;
+                margin: 10px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .metric-value {
+                font-size: 24px;
+                font-weight: bold;
+                color: #4CAF50;
+            }
+            .metric-label {
+                font-size: 14px;
+                color: #666;
+            }
+            .positive { color: green; }
+            .negative { color: red; }
+        </style>
+    </head>
+    <body>
+        <h1>Opening Range Breakout Strategy - Performance Report</h1>
+        <p>Report Generated: 2025-08-28 22:50:12</p>
+
+        <h2>Key Performance Metrics</h2>
+        <div>
+            <div class="metric-box">  <div class="metric-label">Total Return</div>  <div class="metric-value ">0.0%</div></div><div class="metric-box">  <div class="metric-label">Win Rate</div>  <div class="metric-value positive">33.8%</div></div><div class="metric-box">  <div class="metric-label">Profit Factor</div>  <div class="metric-value positive">0.94</div></div><div class="metric-box">  <div class="metric-label">Sharpe Ratio</div>  <div class="metric-value ">-0.40</div></div><div class="metric-box">  <div class="metric-label">Max Drawdown</div>  <div class="metric-value ">$-4028.81</div></div><div class="metric-box">  <div class="metric-label">Total PnL</div>  <div class="metric-value ">$-1708.27</div></div>
+        </div>
+
+        <h2>Performance by Symbol</h2>
+        <table border="1" class="dataframe table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Symbol</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Total Trades</th>
+      <th>Win Rate</th>
+      <th>Total PnL</th>
+      <th>Avg Win</th>
+      <th>Avg Loss</th>
+      <th>Profit Factor</th>
+      <th>Max DD</th>
+      <th>Sharpe</th>
+      <th>Return %</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GLD</td>
+      <td>Gold ETF</td>
+      <td>commodities</td>
+      <td>86</td>
+      <td>45.3%</td>
+      <td>$754.03</td>
+      <td>$56.07</td>
+      <td>$-30.48</td>
+      <td>1.53</td>
+      <td>$-292.66</td>
+      <td>3.06</td>
+      <td>7.5%</td>
+    </tr>
+    <tr>
+      <td>MSFT</td>
+      <td>Microsoft</td>
+      <td>stocks</td>
+      <td>97</td>
+      <td>35.1%</td>
+      <td>$287.10</td>
+      <td>$118.63</td>
+      <td>$-59.46</td>
+      <td>1.08</td>
+      <td>$-835.90</td>
+      <td>0.53</td>
+      <td>2.9%</td>
+    </tr>
+    <tr>
+      <td>SPY</td>
+      <td>S&P 500 ETF</td>
+      <td>stocks</td>
+      <td>98</td>
+      <td>36.7%</td>
+      <td>$228.22</td>
+      <td>$50.21</td>
+      <td>$-25.47</td>
+      <td>1.14</td>
+      <td>$-345.59</td>
+      <td>0.89</td>
+      <td>2.3%</td>
+    </tr>
+    <tr>
+      <td>QQQ</td>
+      <td>Nasdaq ETF</td>
+      <td>stocks</td>
+      <td>92</td>
+      <td>34.8%</td>
+      <td>$148.81</td>
+      <td>$76.53</td>
+      <td>$-38.34</td>
+      <td>1.06</td>
+      <td>$-329.41</td>
+      <td>0.43</td>
+      <td>1.5%</td>
+    </tr>
+    <tr>
+      <td>AMZN</td>
+      <td>Amazon</td>
+      <td>stocks</td>
+      <td>82</td>
+      <td>34.1%</td>
+      <td>$74.07</td>
+      <td>$168.25</td>
+      <td>$-85.87</td>
+      <td>1.02</td>
+      <td>$-1011.75</td>
+      <td>0.12</td>
+      <td>0.7%</td>
+    </tr>
+    <tr>
+      <td>TSLA</td>
+      <td>Tesla</td>
+      <td>stocks</td>
+      <td>80</td>
+      <td>32.5%</td>
+      <td>$-259.35</td>
+      <td>$212.29</td>
+      <td>$-107.02</td>
+      <td>0.96</td>
+      <td>$-2760.11</td>
+      <td>-0.34</td>
+      <td>-2.6%</td>
+    </tr>
+    <tr>
+      <td>GOOGL</td>
+      <td>Google</td>
+      <td>stocks</td>
+      <td>85</td>
+      <td>31.8%</td>
+      <td>$-636.76</td>
+      <td>$157.25</td>
+      <td>$-84.18</td>
+      <td>0.87</td>
+      <td>$-1549.71</td>
+      <td>-1.04</td>
+      <td>-6.4%</td>
+    </tr>
+    <tr>
+      <td>AAPL</td>
+      <td>Apple</td>
+      <td>stocks</td>
+      <td>91</td>
+      <td>19.8%</td>
+      <td>$-2304.38</td>
+      <td>$151.37</td>
+      <td>$-68.89</td>
+      <td>0.54</td>
+      <td>$-2493.84</td>
+      <td>-4.44</td>
+      <td>-23.0%</td>
+    </tr>
+  </tbody>
+</table>
+
+        <h2>Recent Trades (Last 20)</h2>
+        <table border="1" class="dataframe table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>symbol</th>
+      <th>type</th>
+      <th>entry_time</th>
+      <th>entry_price</th>
+      <th>exit_price</th>
+      <th>exit_reason</th>
+      <th>pnl</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QQQ</td>
+      <td>LONG</td>
+      <td>2025-08-27 14:10:00+00:00</td>
+      <td>572.210122</td>
+      <td>570.369895</td>
+      <td>STOP_LOSS</td>
+      <td>-33.124083</td>
+    </tr>
+    <tr>
+      <td>MSFT</td>
+      <td>LONG</td>
+      <td>2025-08-27 14:20:00+00:00</td>
+      <td>503.570107</td>
+      <td>500.159904</td>
+      <td>STOP_LOSS</td>
+      <td>-68.204073</td>
+    </tr>
+    <tr>
+      <td>GLD</td>
+      <td>LONG</td>
+      <td>2025-08-27 14:25:00+00:00</td>
+      <td>311.400094</td>
+      <td>312.660104</td>
+      <td>TAKE_PROFIT</td>
+      <td>42.840332</td>
+    </tr>
+    <tr>
+      <td>AAPL</td>
+      <td>LONG</td>
+      <td>2025-08-27 14:35:00+00:00</td>
+      <td>230.250100</td>
+      <td>228.294898</td>
+      <td>STOP_LOSS</td>
+      <td>-64.521660</td>
+    </tr>
+    <tr>
+      <td>TSLA</td>
+      <td>SHORT</td>
+      <td>2025-08-27 19:10:00+00:00</td>
+      <td>349.779899</td>
+      <td>338.559867</td>
+      <td>TAKE_PROFIT</td>
+      <td>190.740540</td>
+    </tr>
+    <tr>
+      <td>QQQ</td>
+      <td>LONG</td>
+      <td>2025-08-27 20:25:00+00:00</td>
+      <td>572.210122</td>
+      <td>570.369895</td>
+      <td>STOP_LOSS</td>
+      <td>-31.283857</td>
+    </tr>
+    <tr>
+      <td>SPY</td>
+      <td>LONG</td>
+      <td>2025-08-27 20:25:00+00:00</td>
+      <td>645.530129</td>
+      <td>647.750222</td>
+      <td>TAKE_PROFIT</td>
+      <td>33.301392</td>
+    </tr>
+    <tr>
+      <td>SPY</td>
+      <td>LONG</td>
+      <td>2025-08-27 20:55:00+00:00</td>
+      <td>645.530129</td>
+      <td>647.750222</td>
+      <td>TAKE_PROFIT</td>
+      <td>33.301392</td>
+    </tr>
+    <tr>
+      <td>GOOGL</td>
+      <td>LONG</td>
+      <td>2025-08-27 21:20:00+00:00</td>
+      <td>207.530099</td>
+      <td>211.260110</td>
+      <td>TAKE_PROFIT</td>
+      <td>164.120483</td>
+    </tr>
+    <tr>
+      <td>MSFT</td>
+      <td>SHORT</td>
+      <td>2025-08-28 13:50:00+00:00</td>
+      <td>506.399894</td>
+      <td>510.238900</td>
+      <td>STOP_LOSS</td>
+      <td>-76.780123</td>
+    </tr>
+    <tr>
+      <td>GLD</td>
+      <td>LONG</td>
+      <td>2025-08-28 13:50:00+00:00</td>
+      <td>313.700112</td>
+      <td>314.960122</td>
+      <td>TAKE_PROFIT</td>
+      <td>42.840332</td>
+    </tr>
+    <tr>
+      <td>TSLA</td>
+      <td>SHORT</td>
+      <td>2025-08-28 14:05:00+00:00</td>
+      <td>349.009910</td>
+      <td>353.550088</td>
+      <td>STOP_LOSS</td>
+      <td>-95.343739</td>
+    </tr>
+    <tr>
+      <td>QQQ</td>
+      <td>SHORT</td>
+      <td>2025-08-28 14:25:00+00:00</td>
+      <td>573.849876</td>
+      <td>576.530129</td>
+      <td>STOP_LOSS</td>
+      <td>-45.564313</td>
+    </tr>
+    <tr>
+      <td>AAPL</td>
+      <td>LONG</td>
+      <td>2025-08-28 14:40:00+00:00</td>
+      <td>230.880105</td>
+      <td>229.334907</td>
+      <td>STOP_LOSS</td>
+      <td>-50.991540</td>
+    </tr>
+    <tr>
+      <td>AMZN</td>
+      <td>LONG</td>
+      <td>2025-08-28 14:50:00+00:00</td>
+      <td>230.860101</td>
+      <td>228.569907</td>
+      <td>STOP_LOSS</td>
+      <td>-100.768505</td>
+    </tr>
+    <tr>
+      <td>SPY</td>
+      <td>LONG</td>
+      <td>2025-08-28 16:25:00+00:00</td>
+      <td>648.090127</td>
+      <td>648.611000</td>
+      <td>END_OF_DATA</td>
+      <td>7.813097</td>
+    </tr>
+    <tr>
+      <td>QQQ</td>
+      <td>LONG</td>
+      <td>2025-08-28 16:25:00+00:00</td>
+      <td>576.530129</td>
+      <td>573.849876</td>
+      <td>STOP_LOSS</td>
+      <td>-45.564313</td>
+    </tr>
+    <tr>
+      <td>MSFT</td>
+      <td>LONG</td>
+      <td>2025-08-28 19:40:00+00:00</td>
+      <td>510.238900</td>
+      <td>506.399894</td>
+      <td>STOP_LOSS</td>
+      <td>-76.780123</td>
+    </tr>
+    <tr>
+      <td>MSFT</td>
+      <td>LONG</td>
+      <td>2025-08-28 22:00:00+00:00</td>
+      <td>510.238900</td>
+      <td>509.715000</td>
+      <td>END_OF_DATA</td>
+      <td>-10.478001</td>
+    </tr>
+    <tr>
+      <td>QQQ</td>
+      <td>LONG</td>
+      <td>2025-08-28 23:05:00+00:00</td>
+      <td>576.530129</td>
+      <td>576.680000</td>
+      <td>END_OF_DATA</td>
+      <td>2.547802</td>
+    </tr>
+  </tbody>
+</table>
+
+        <h2>Strategy Configuration</h2>
+        <ul>
+            <li>Opening Range: 9:30 AM - 9:45 AM EST</li>
+            <li>Risk per Trade: 1%</li>
+            <li>Take Profit Multiplier: 2x Range</li>
+            <li>Maximum Trades per Day: 3</li>
+        </ul>
+    </body>
+    </html>

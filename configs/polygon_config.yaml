@@ -1,0 +1,68 @@
+# Polygon.io API Configuration
+
+polygon:
+  # Get your free API key from: https://polygon.io/dashboard/api-keys
+  api_key: "eLixLfwP5E_K_XjqEieTlub6v32LY5Hv"
+  
+  # Rate limiting for free tier (5 requests per minute)
+  rate_limit:
+    requests_per_minute: 5
+    delay_between_requests: 12  # seconds (60/5)
+  
+  # Data download settings
+  download:
+    timespan: "minute"
+    multiplier: 5  # 5-minute bars
+    years_of_history: 2
+    
+  # Symbols to download - top performers from backtest
+  symbols:
+    stocks:
+      - COST   # 1867% return
+      - ADBE   # 490% return
+      - NFLX   # 383% return
+      - QQQ    # 301% return
+      - PEP    # 216% return
+      - XLF    # 159% return
+      - GOOGL  # 148% return
+      - DIA    # 106% return
+      - AAPL   # 100% return
+      - MSFT   # 96% return
+      - NVDA   # 77% return
+      - MA     # 71% return
+      - IWM    # 61% return
+      - AMZN   # 58% return
+      - XLK    # 58% return
+      - META   # 57% return
+      - AMD    # 55% return
+      - BAC    # 52% return
+      - UNH    # 51% return
+      - SPY    # 3.7% return (benchmark)
+    
+    forex:
+      - "C:EURUSD"   # EUR/USD
+      - "C:GBPUSD"   # GBP/USD
+      - "C:USDJPY"   # USD/JPY
+      - "C:AUDUSD"   # AUD/USD
+      - "C:USDCAD"   # USD/CAD
+      
+  # Output settings
+  output:
+    directory: "data/polygon"
+    format: "csv"
+    
+  # Analysis periods for extended backtest
+  analysis:
+    periods:
+      - name: "Full Period"
+        start: null  # Will use all available data
+        end: null
+      - name: "2023 Bull Market"
+        start: "2023-01-01"
+        end: "2023-12-31"
+      - name: "2022 Bear Market"
+        start: "2022-01-01"
+        end: "2022-12-31"
+      - name: "Recent Performance"
+        start: "2024-01-01"
+        end: null  # Current date

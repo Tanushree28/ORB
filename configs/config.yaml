@@ -1,0 +1,81 @@
+# ORB Strategy Configuration
+
+strategy:
+  # Opening Range Configuration
+  opening_range:
+    start_time: "09:30"  # EST
+    end_time: "09:45"    # EST
+    duration_minutes: 15  # Can be adjusted
+  
+  # Risk Management
+  risk_management:
+    risk_per_trade: 0.01  # 1% risk per trade
+    initial_capital: 10000  # Starting capital
+    
+  # Trade Parameters
+  trade_parameters:
+    tp_multiplier: 2.0  # Take profit multiplier (adjustable)
+    sl_buffer: 0.0001  # Small buffer for stop loss placement
+    max_trades_per_day: 3  # Maximum trades per symbol per day
+    
+  # Position Sizing
+  position_sizing:
+    method: "fixed_risk"  # Options: fixed_risk, fixed_units
+    
+# Symbols to Trade
+symbols:
+  futures:
+    - symbol: "MNQ=F"  # Micro E-mini Nasdaq
+      name: "Micro Nasdaq"
+      multiplier: 2
+    - symbol: "NQ=F"   # E-mini Nasdaq
+      name: "Nasdaq Futures"
+      multiplier: 20
+      
+  forex:
+    - symbol: "EURUSD=X"
+      name: "EUR/USD"
+      pip_value: 0.0001
+      
+  commodities:
+    - symbol: "GC=F"  # Gold Futures
+      name: "Gold"
+      multiplier: 100
+    - symbol: "GLD"   # Gold ETF (alternative)
+      name: "Gold ETF"
+      multiplier: 1
+      
+  stocks:
+    - symbol: "AAPL"
+      name: "Apple"
+    - symbol: "MSFT"
+      name: "Microsoft"
+    - symbol: "GOOGL"
+      name: "Google"
+    - symbol: "AMZN"
+      name: "Amazon"
+    - symbol: "TSLA"
+      name: "Tesla"
+    - symbol: "SPY"
+      name: "S&P 500 ETF"
+    - symbol: "QQQ"
+      name: "Nasdaq ETF"
+
+# Data Configuration
+data:
+  intervals:
+    - "5m"
+    - "15m"
+  start_date: "2025-07-01"
+  end_date: "2025-08-28"
+  
+# Backtesting Configuration
+backtesting:
+  commission: 0.0005  # 0.05% per trade
+  slippage: 0.0001    # 0.01% slippage
+  
+# Reporting
+reporting:
+  generate_html: true
+  generate_csv: true
+  plot_trades: true
