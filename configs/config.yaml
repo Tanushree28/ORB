@@ -16,7 +16,9 @@ strategy:
   trade_parameters:
     tp_multiplier: 2.0  # Take profit multiplier (adjustable)
     sl_buffer: 0.0001  # Small buffer for stop loss placement
-    max_trades_per_day: 3  # Maximum trades per symbol per day
+    max_trades_per_day: 2  # Maximum trades per symbol per day
+    max_long_trades_per_day: 1  # Limit to one long trade per day
+    max_short_trades_per_day: 1  # Limit to one short trade per day
     
   # Position Sizing
   position_sizing:

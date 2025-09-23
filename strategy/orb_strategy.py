@@ -27,13 +27,35 @@ class ORBStrategy:
         
         self.tp_multiplier = self.config['strategy']['trade_parameters']['tp_multiplier']
         self.sl_buffer = self.config['strategy']['trade_parameters']['sl_buffer']
-        self.max_trades_per_day = self.config['strategy']['trade_parameters']['max_trades_per_day']
-        
+        trade_params = self.config['strategy']['trade_parameters']
+        self.max_trades_per_day = trade_params['max_trades_per_day']
+        self.max_long_trades_per_day = trade_params.get('max_long_trades_per_day', self.max_trades_per_day)
+        self.max_short_trades_per_day = trade_params.get('max_short_trades_per_day', self.max_trades_per_day)
+
         # Trading state
         self.current_capital = self.initial_capital
         self.trades = []
         self.daily_trades = {}
-        
+        self.daily_direction_trades = {}
+
+    def apply_parameter_overrides(self, overrides: Dict) -> None:
+        """Apply runtime overrides to core strategy parameters."""
+        if not overrides:
+            return
+
+        if 'tp_multiplier' in overrides:
+            self.tp_multiplier = overrides['tp_multiplier']
+        if 'risk_per_trade' in overrides:
+            self.risk_per_trade = overrides['risk_per_trade']
+        if 'max_trades_per_day' in overrides:
+            self.max_trades_per_day = overrides['max_trades_per_day']
+        if 'max_long_trades_per_day' in overrides:
+            self.max_long_trades_per_day = overrides['max_long_trades_per_day']
+        if 'max_short_trades_per_day' in overrides:
+            self.max_short_trades_per_day = overrides['max_short_trades_per_day']
+        if 'orb_duration' in overrides:
+            self.orb_duration = overrides['orb_duration']
+
 
     def calculate_opening_range(self, data: pd.DataFrame, session_date: pd.Timestamp):
         """
@@ -68,19 +90,15 @@ class ORBStrategy:
         # 4) Filter
         orb_data = data[(data.index >= start_dt) & (data.index <= end_dt)]
         if orb_data.empty:
-            return {
-                'date': d.date(),
-                'orb_high': None,
-                'orb_low': None,
-                'orb_range': None,
-                'orb_start': start_dt,
-                'orb_end': end_dt
-            }
+            return None
 
         # 5) Stats + return (keys unchanged)
         orb_high = float(orb_data['High'].max())
         orb_low  = float(orb_data['Low'].min())
         orb_range = orb_high - orb_low
+
+        if orb_range <= 0:
+            return None
 
         return {
             'date': d.date(),
@@ -141,17 +159,24 @@ class ORBStrategy:
         if current_bar.name <= orb['orb_end']:
             return None
         
-        # Check daily trade limit
-        date_str = current_bar.name.date()
-        if date_str in self.daily_trades:
-            if self.daily_trades[date_str] >= self.max_trades_per_day:
-                return None
-        
+        # Check daily trade limits
+        date_key = current_bar.name.date()
+        total_trades = self.daily_trades.get(date_key, 0)
+        if total_trades >= self.max_trades_per_day:
+            return None
+
+        direction_counts = self.daily_direction_trades.get(
+            date_key,
+            {'LONG': 0, 'SHORT': 0}
+        )
+
         signal = None
-        
+
         # Check for breakout above ORB high (Long signal)
         if previous_bar is not None:
             if previous_bar['Close'] <= orb['orb_high'] and current_bar['Close'] > orb['orb_high']:
+                if direction_counts.get('LONG', 0) >= self.max_long_trades_per_day:
+                    return None
                 # Long entry signal
                 entry_price = orb['orb_high'] + self.sl_buffer
                 stop_loss = orb['orb_low'] - self.sl_buffer
@@ -171,6 +196,8 @@ class ORBStrategy:
             
             # Check for breakout below ORB low (Short signal)
             elif previous_bar['Close'] >= orb['orb_low'] and current_bar['Close'] < orb['orb_low']:
+                if direction_counts.get('SHORT', 0) >= self.max_short_trades_per_day:
+                    return None
                 # Short entry signal
                 entry_price = orb['orb_low'] - self.sl_buffer
                 stop_loss = orb['orb_high'] + self.sl_buffer
@@ -259,7 +286,8 @@ class ORBStrategy:
         self.current_capital = self.initial_capital
         self.trades = []
         self.daily_trades = {}
-        
+        self.daily_direction_trades = {}
+
         # Group data by date
         dates = pd.to_datetime(data.index.date).unique()
         
@@ -304,13 +332,17 @@ class ORBStrategy:
                     if entry_signal:
                         # Open new trade
                         open_trade = entry_signal
-                        
+
                         # Update daily trade counter
                         date_str = current_bar.name.date()
                         if date_str not in self.daily_trades:
                             self.daily_trades[date_str] = 0
                         self.daily_trades[date_str] += 1
-                
+
+                        if date_str not in self.daily_direction_trades:
+                            self.daily_direction_trades[date_str] = {'LONG': 0, 'SHORT': 0}
+                        self.daily_direction_trades[date_str][open_trade['type']] += 1
+
                 previous_bar = current_bar
         
         # Close any remaining open trade at the end
