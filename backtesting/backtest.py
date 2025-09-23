@@ -21,16 +21,23 @@ from data_downloader import DataDownloader
 from strategy.orb_strategy import ORBStrategy
 
 class BacktestEngine:
-    def __init__(self, config_path='configs/config.yaml'):
+    def __init__(self, config_path='configs/config.yaml', strategy_overrides: Optional[Dict] = None):
         """Initialize backtest engine"""
         with open(config_path, 'r') as f:
             self.config = yaml.safe_load(f)
-        
+
         self.data_downloader = DataDownloader(config_path)
+        self.strategy_overrides = strategy_overrides or {}
         self.strategy = ORBStrategy(config_path)
-        
+        self._apply_strategy_overrides()
+
         self.results = {}
         self.all_trades = []
+
+    def _apply_strategy_overrides(self) -> None:
+        """Apply any configured overrides to the active strategy instance."""
+        if self.strategy_overrides:
+            self.strategy.apply_parameter_overrides(self.strategy_overrides)
         
     def run_single_backtest(self, symbol: str, interval: str = '5m') -> Dict:
         """
@@ -95,6 +102,7 @@ class BacktestEngine:
             # ORBStrategy.backtest() resets internal state at the start.
             # If you prefer to recreate it each time, keep the next line.
             self.strategy = ORBStrategy('configs/config.yaml')
+            self._apply_strategy_overrides()
 
             try:
                 # Run backtest
