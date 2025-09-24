@@ -60,6 +60,16 @@ This will:
 - Show consistency of top performers
 - Generate comprehensive comparison charts
 
+### Step 4: Run Systematic Parameter Sweep on Polygon Data
+```bash
+python polygon_systematic/polygon_systematic_backtest.py
+```
+
+This script mirrors the systematic tuner used for Yahoo Finance data while keeping it separate from the existing workflow. It will:
+- Iterate across the 5-minute and 15-minute opening ranges, TP/SL ratios of 2:1, 1:1, and 0.5:1, and risk-per-trade levels of 1% and 2%
+- Respect the cap of one long and one short trade per day
+- Produce dedicated reports under `reports/` (prefixed with `polygon_systematic_`) so Polygon results remain isolated from the legacy summaries
+
 ## Free Tier Limitations
 
 ### What's Included (Free)
