@@ -148,6 +148,35 @@ def summarise_results(results_df: pd.DataFrame) -> None:
         "symbol combination summary",
     )
 
+    symbol_summary = (
+        results_df.groupby(["symbol", "name", "category"])
+        .agg(
+            avg_return=("return_pct", "mean"),
+            median_return=("return_pct", "median"),
+            best_return=("return_pct", "max"),
+            worst_return=("return_pct", "min"),
+            avg_profit_factor=("profit_factor", "mean"),
+            total_trades=("total_trades", "sum"),
+        )
+        .reset_index()
+    )
+
+    symbol_positive_ratio = (
+        results_df.assign(is_positive=results_df["return_pct"] > 0)
+        .groupby(["symbol", "name", "category"])["is_positive"]
+        .mean()
+        .reset_index(name="positive_ratio")
+    )
+    symbol_summary = symbol_summary.merge(symbol_positive_ratio, on=["symbol", "name", "category"], how="left")
+
+    symbol_path = _safe_to_csv(
+        symbol_summary,
+        "reports/systematic_backtest_symbol_summary.csv",
+        "per-symbol aggregate performance",
+    )
+
+    print(f"Saved per-symbol summary to {symbol_path}")
+
     top_by_symbol = (
         results_df.sort_values(["symbol", "return_pct"], ascending=[True, False])
         .groupby(["symbol", "interval"])
@@ -159,12 +188,62 @@ def summarise_results(results_df: pd.DataFrame) -> None:
         "per-symbol top combinations",
     )
 
+    print(f"Saved top combinations by symbol to {top_path}")
+
+    robust_combos = combo_summary[
+        (combo_summary["avg_return"] > 0)
+        & (combo_summary["avg_profit_factor"] > 1)
+        & (combo_summary["positive_ratio"].fillna(0) >= 0.6)
+    ].copy()
+    robust_path = _safe_to_csv(
+        robust_combos,
+        "reports/systematic_backtest_robust_combos.csv",
+        "robust combination summary",
+    )
+
+    if not robust_combos.empty:
+        print(f"Saved robust combination summary to {robust_path}")
+
     print("\nTop parameter combinations by average return:")
     print(
         combo_summary.sort_values("avg_return", ascending=False)
         .head(10)
         .to_string(index=False, formatters={"avg_return": "{:.2f}".format})
     )
+
+    print("\nSymbols with highest average returns across all scenarios:")
+    print(
+        symbol_summary.sort_values("avg_return", ascending=False)
+        .head(10)
+        .to_string(
+            index=False,
+            formatters={
+                "avg_return": "{:.2f}".format,
+                "median_return": "{:.2f}".format,
+                "best_return": "{:.2f}".format,
+                "worst_return": "{:.2f}".format,
+                "avg_profit_factor": "{:.2f}".format,
+                "positive_ratio": "{:.2f}".format,
+            },
+        )
+    )
+
+    if not robust_combos.empty:
+        print("\nRobust parameter sets (avg_return>0, PF>1, >=60% symbols profitable):")
+        print(
+            robust_combos.sort_values("avg_return", ascending=False)
+            .to_string(
+                index=False,
+                formatters={
+                    "avg_return": "{:.2f}".format,
+                    "median_return": "{:.2f}".format,
+                    "avg_profit_factor": "{:.2f}".format,
+                    "positive_ratio": "{:.2f}".format,
+                },
+            )
+        )
+    else:
+        print("\nNo parameter sets met the robustness filter (avg_return>0, PF>1, >=60% positive symbols).")
 
 
 def main() -> None:
