@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import sys
 from datetime import datetime
 from itertools import product
 from pathlib import Path
@@ -10,6 +11,13 @@ from typing import Dict, Iterable, List, Optional
 
 import pandas as pd
 import yaml
+
+
+# Ensure the repository root is on sys.path so ``strategy`` imports resolve when the
+# script is executed as ``python polygon_systematic/polygon_systematic_backtest.py``.
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from strategy.orb_strategy import ORBStrategy
 
