@@ -70,6 +70,7 @@ This script mirrors the systematic tuner used for Yahoo Finance data while keepi
 - Respect the cap of one long and one short trade per day
 - Produce dedicated reports under `reports/` (prefixed with `polygon_systematic_`) so Polygon results remain isolated from the legacy summaries
 
+
 ### Step 5: Visualise Polygon Systematic Results
 ```bash
 python polygon_systematic/visualize_polygon_systematic.py
