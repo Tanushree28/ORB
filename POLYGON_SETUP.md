@@ -70,6 +70,17 @@ This script mirrors the systematic tuner used for Yahoo Finance data while keepi
 - Respect the cap of one long and one short trade per day
 - Produce dedicated reports under `reports/` (prefixed with `polygon_systematic_`) so Polygon results remain isolated from the legacy summaries
 
+
+### Step 5: Visualise Polygon Systematic Results
+```bash
+python polygon_systematic/visualize_polygon_systematic.py
+```
+
+Run this helper after the sweep to translate the CSV outputs into quick visuals:
+- Heatmaps highlighting how average returns shift across ORB windows, TP multipliers, and risk levels
+- A bar chart of parameter sets with the highest percentage of profitable symbols
+- A per-symbol performance ladder to spot consistently strong instruments
+
 ## Free Tier Limitations
 
 ### What's Included (Free)
