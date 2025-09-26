@@ -80,7 +80,21 @@ Simulate trading for a specific symbol:
 python main.py --simulate TSLA
 ```
 
-### 5. Generate Reports Only
+### 5. Run Systematic Parameter Sweep
+Evaluate the ORB rules across the default symbol universe and parameter grid:
+```bash
+python systematic_backtest.py
+```
+
+After the sweep completes, generate aggregated heatmaps and leaderboards:
+```bash
+python visualize_systematic_backtest.py
+```
+
+This produces PNG charts alongside the CSV reports in `reports/`, mirroring the
+Polygon workflow described in `POLYGON_SETUP.md`.
+
+### 6. Generate Reports Only
 ```bash
 python main.py --report
 ```
